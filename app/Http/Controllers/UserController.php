@@ -17,11 +17,6 @@ class UserController extends Controller
      */
     public function createImage(Request $request)
     {
-        $api_credentials = array(
-            'key' => 'acc_9a38cfea4645d9e',
-            'secret' => 'b54a0a9f0591f2bdeed95dc25a6b4e3c'
-        );
-
         $validator = Validator::make($request->all(), [
             'uri' => 'required',
         ]);
@@ -31,7 +26,7 @@ class UserController extends Controller
         }
         $image_url = $request->uri;
 
-        $response = Http::withBasicAuth($api_credentials['key'], $api_credentials['secret'])
+        $response = Http::withBasicAuth(env('API_KEY'), env('API_SECRET'))
             ->get('https://api.imagga.com/v2/categories/personal_photos?image_url=' . $image_url);
 
         $decoded = json_decode($response);
@@ -54,6 +49,13 @@ class UserController extends Controller
      */
     public function userImages(Request $request)
     {
-        return response()->json(['images' => auth()->user()->userImages], 200);
+        $images = auth()->user()->userImages;
+        $data = array();
+        for($i=0; $i<count($images); $i++){
+            if(!array_key_exists($images[$i]->category, $data))
+                $data[$images[$i]->category]= array();
+            array_push($data[$images[$i]->category], $images[$i]);
+        }
+        return response()->json(['images' => $data], 200);
     }
 }
