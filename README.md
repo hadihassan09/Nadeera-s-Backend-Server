@@ -5,6 +5,7 @@
   - Add Imagga API_KEY and API_SECRET in .env
   - Change your database configuration
   - Run Migration `[user@machine ~]$ php artisan migrate`
+  - Run Seeder `[user@machine ~]$ php artisan db:seed --class=UserSeeder`
 ## Install Required Packages  
 `[user@machine ~]$ composer install && npm install && npm run dev`
 ## Start server
