@@ -56,6 +56,6 @@ class UserController extends Controller
                 $data[$images[$i]->category]= array();
             array_push($data[$images[$i]->category], $images[$i]);
         }
-        return response()->json(['images' => $data], 200);
+        return response()->json($data, 200);
     }
 }
